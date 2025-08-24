@@ -65,4 +65,31 @@ func main() {
 
 	// Em Go não existe uma função built-in específica como remove ou delete para slices
 	// Para "remover" um elemento de um slice, você basicamente recria o slice sem o elemento desejado
+
+	// ARRAYS INTERNOS
+	// Em Go, um slice não é um array por si só, mas sim uma view de um array subjacente.
+	// Quando você cria um slice, ele é baseado em um array interno que pode ser compartilhado por outros slices.
+	// O array subjacente é alocado na memória, e o slice apenas "aponta" para uma porção desse array.
+
+	// Compartilhamento: Vários slices podem apontar para o mesmo array subjacente.
+	// Alterações em um slice afetam o array original e, indiretamente, outros slices que o compartilham.
+
+	// Capacidade: A capacidade (cap) é o número de elementos disponíveis a partir do início do slice até o final do array subjacente.
+	// Isso determina até onde o slice pode crescer com append antes de precisar realocar.
+
+	// Realocação: Se você usa append e excede a capacidade, Go cria um novo array subjacente maior e copia os dados, atualizando o ponteiro do slice.
+	fmt.Println("-------------------------------")
+	f := make([]float32, 10) // tipo, tamanho, capacidade máxima
+	// A capacidade máxima é opcional, se omitida ela assumirá o valor do parâmetro tamanho
+	// Então, podemos criar o slice também desta forma: make([]float32, 10, 12)
+	fmt.Println(f)
+	fmt.Println(len(f))
+	fmt.Println(cap(f))
+
+	// Ao adicionar mais 3 itens no slice que foi definido como tendo capacidade para 12 posições
+	// ele ultrapassa essa capacidade; o Go lida com isso criando um novo array de tamanho dobrado
+	// e apontando o slice para ele.
+	f = append(f, 0)    // 11 itens no slice, o que ultrapassa sua capacidade de 10
+	fmt.Println(len(f)) // seu tamanho passa a ser 11
+	fmt.Println(cap(f)) // sua capacidade passa a ser 20: a capacidade anterior (10) multiplicada por 2
 }
